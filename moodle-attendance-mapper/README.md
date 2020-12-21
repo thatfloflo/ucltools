@@ -12,8 +12,25 @@ then marked as "Present" on the attendance sheet. The script can be set to be
 sensitive to both BB Collaborate and Zoom or selectively to only one of them
 by setting the variables (see description of variables below).
 
+<a id="contents"></a>
+## 1. Contents
 
-## Requirements
+- 1. [ Contents ](#contents)
+- 2. [ Requirements ](#requirements)
+- 3. [ Setup and usage ](#setup)    
+  * 3.1. [ Setting up the folder structure ](#setup-folder)    
+  * 3.2. [ Setting up the attendance sheet ](#setup-attendance-sheet)    
+  * 3.3. [ Setting up the script ](#setup-script)    
+  * 3.4. [ Obtaining the log files  ](#setup-logs)    
+  * 3.5. [ Running the attendance mapper ](#setup-run)    
+    + 3.5.1 [ From the terminal on *nix systems (including macOS) ](#setup-run-unix)    
+    + 3.5.2 [ On Windows ](#setup-run-windows)    
+    + 3.5.3 [ The first time running the moodle attendance mapper ](#setup-run-first-time)
+- 4. [ Reporting issues ](#report-issues)
+- 5. [ License ](#license)
+
+<a id="requirements"></a>
+## 2. Requirements
 
 You must have [R](https://www.r-project.org/) installed on your system to run this script.
 
@@ -23,8 +40,8 @@ with your chosen R environemnt (e.g. [RStudio](https://rstudio.com/)). To test
 if R is available on your PATH just open a terminal (cmd.exe on Windows) and
 type `Rscript --version`. If you get a version number as a response you're good.
 
-
-## Setup and usage
+<a id="setup"></a>
+## 3. Setup and usage
 
 At first glance, the below instructions might seem quite involved and if you've
 never done much scripting or worked on the terminal it may seem a bit daunting,
@@ -33,7 +50,8 @@ workflow will only take you about 2 minutes a week to download your log, run
 the script and (if you're required to) share your updated attendance sheet, so
 the time you invest in setting this up will pay off very quickly.
 
-### 1. Setting up the folder structure
+<a id="setup-folder"></a>
+### 3.1. Setting up the folder structure
 
 Make a folder for your module's attendance. This folder can be named anything
 you like, but it shouldn't contain anything that isn't to do with mapping
@@ -55,7 +73,8 @@ folder. By the end of it, your folder structure will look something like this:
         +-- ...
         +-- ...
 
-### 2. Setting up the attendance sheet
+<a id="setup-attendance-sheet"></a>
+### 3.2. Setting up the attendance sheet
 
 If you are in the Linguistics department at UCL, just save the attendance
 sheet template you are provided with inside the directory. Make sure its
@@ -91,7 +110,8 @@ by the script, they just **must not** be named "Name", "Name_normalised", or
 "Week N" (where N is a number), as those are columns with special meaning to
 the script. Column order is also irrelevant and will be preserved.
 
-### 3. Setting up the script
+<a id="setup-script"></a>
+### 3.3. Setting up the script
 
 Open the script in a text editor (e.g. Notepad), and adjust the settings of the
 five UPPERCASE variables at the top of the script, as follows below if necessary.
@@ -124,7 +144,8 @@ EXTRACT_BB_COLLAB = TRUE
 EXTRACT_ZOOM_CLICKS = TRUE
 ```
 
-### 4. Obtaining the log files
+<a id="setup-logs"></a>
+### 3.4. Obtaining the log files
 
 Once you've set up the directory and script as per the instructions above,
 you're ready to start tracking attendance. After your first day of teaching
@@ -146,9 +167,11 @@ directory — the script will look through it on a week by week basis. The
 important thing is that the log files are all in the same folder and end with
 the file extension `.csv`. The name of the files is otherwise not important.
 
-### 5. Running the attendance mapper
+<a id="setup-run"></a>
+### 3.5. Running the attendance mapper
 
-#### From the terminal on *nix systems (including macOS)
+<a id="setup-run-unix"></a>
+#### 3.5.1. From the terminal on *nix systems (including macOS)
 
 If you are on Linux, BSD, or macOS and happy enough to work on the terminal
 just go the the your attendance directory in the console and type the
@@ -171,7 +194,8 @@ and the script should start spitting out a report as it processes your log
 files. You'll just run this command every time you want to update the attendance
 sheet.
 
-#### On Windows
+<a id="setup-run-windows"></a>
+#### 3.5.2. On Windows
 
 If you are on Windows, and you have R installed and on the PATH, just go
 to the attendance directory and double click on `map-attendance.bat`,
@@ -184,7 +208,8 @@ R or RStudio and then run the script from there (or, of course, [you can add
 `RScript.exe` to your PATH](https://info201.github.io/r-intro.html#:~:text=In%20Windows,%20You%20can%20add%20the%20) and then double
 click the `map-attendance.bat` script again).
 
-#### The first time running the moodle attendance mapper
+<a id="setup-run-first-time"></a>
+#### 3.5.3. The first time running the moodle attendance mapper
 
 The script does a few things to try its best to match up names from the logs
 with the attendance sheet (normalised ordering, dropping middle names),
@@ -213,15 +238,15 @@ because a student with a problematic name may not have attended a session before
 (e.g. if they miss the first three weeks, then they'll only show up in week four
 of teaching).
 
-
-## Reporting issues
+<a id="report-issues"></a>
+## 4. Reporting issues
 
 If you encounter any issues with the script, find bugs, have suggestions for
 improvement or have any other questions feel free to get in touch with me. The
 best way will be by raising an issue here on GitHub, followed closely by sending
 me an email on <florian.breit.12@ucl.ac.uk>.
 
-
-## License
+<a id="license"></a>
+## 5. License
 [Affero General Public License v3](https://www.gnu.org/licenses/agpl-3.0.en.html)    
 (If this doesn't fit your needs just get in touch!)
