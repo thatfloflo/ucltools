@@ -15,9 +15,9 @@ by setting the variables (see description of variables below).
 <a id="contents"></a>
 ## 1. Contents
 
-- \1. [ Contents ](#contents)
-- \2. [ Requirements ](#requirements)
-- \3. [ Setup and usage ](#setup)    
+- <span>1.</span> [ Contents ](#contents)
+- <span>2.</span> [ Requirements ](#requirements)
+- <span>3.</span> [ Setup and usage ](#setup)    
   * 3.1. [ Setting up the folder structure ](#setup-folder)    
   * 3.2. [ Setting up the attendance sheet ](#setup-attendance-sheet)    
   * 3.3. [ Setting up the script ](#setup-script)    
@@ -26,8 +26,8 @@ by setting the variables (see description of variables below).
     + 3.5.1 [ From the terminal on *nix systems (including macOS) ](#setup-run-unix)    
     + 3.5.2 [ On Windows ](#setup-run-windows)    
     + 3.5.3 [ The first time running the moodle attendance mapper ](#setup-run-first-time)
-- \4. [ Reporting issues ](#report-issues)
-- \5. [ License ](#license)
+- <span>4.</span> [ Reporting issues ](#report-issues)
+- <span>5.</span> [ License ](#license)
 
 <a id="requirements"></a>
 ## 2. Requirements
