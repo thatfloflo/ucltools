@@ -1,0 +1,49 @@
+body {
+	font: 12pt sans-serif;
+}
+h1 {
+	font-size: 120%;
+	border-bottom:2px solid black;
+}
+.studentdiv {
+	width: 100%;
+	margin-bottom: 4px;
+	border-bottom: 1px dotted gray;
+}
+.sv-panel {
+	display:inline-block;
+}
+.sv-panel-heading {
+	width:150px;
+	display:inline-block;
+	vertical-align:top;
+	padding-top:5px;
+}
+.sv-panel-body {
+	width: 300px;
+	height: 160px;
+	overflow:hidden;
+	display:inline-block;
+}
+.sv-panel-footer {
+	display:none;
+}
+.weekly-sign-in {
+	display:inline-block;
+	vertical-align:top;
+	margin-left:5px;
+	padding-top:5px;
+}
+.sign-in-table {
+	border:1px solid black;
+	border-collapse:collapse;
+}
+.sign-in-table th, .sign-in-table td {
+	border:1px solid black;
+	width:30px;
+	height:30px;
+}
+img {
+	max-width:150px;
+	margin:0px;
+}
