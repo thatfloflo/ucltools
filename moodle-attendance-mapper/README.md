@@ -94,8 +94,8 @@ the script. Column order is also irrelevant and will be preserved.
 ### 3. Setting up the script
 
 Open the script in a text editor (e.g. Notepad), and adjust the settings of the
-five UPPERCASE variables at the top of the script, as follows:
-below if necessary. The variables encode the following:
+five UPPERCASE variables at the top of the script, as follows below if necessary.
+The variables encode the following:
 
 -   MODULE_CODE: The code of your module, e.g. `"PLIN1234"`, used to determine
     the name of the attendance spreadsheet.
@@ -177,10 +177,12 @@ If you are on Windows, and you have R installed and on the PATH, just go
 to the attendance directory and double click on `map-attendance.bat`,
 which will run the script.
 
-If you get the message `'rscript' is not recognized as an internal or external command,
+If you get the message `'Rscript' is not recognized as an internal or external command,
 operable program or batch file.` this means you don't have R available on your
 PATH, so you will have to open the script `moodle-attendance-mapper.r` with
-R or RStudio and then run the script from there.
+R or RStudio and then run the script from there (or, of course, [you can add
+`RScript.exe` to your PATH](https://info201.github.io/r-intro.html#:~:text=In%20Windows,%20You%20can%20add%20the%20) and then double
+click the `map-attendance.bat` script again).
 
 #### The first time running the moodle attendance mapper
 
