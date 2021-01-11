@@ -5,8 +5,10 @@ from bs4 import BeautifulSoup
 import csv
 from string import Template
 import os
+import shutil
 
 HtmlIn = "./SMO Class List - with Photos.html"
+ImgDir = "./SMO Class List - with Photos_files"
 CsvIn = "./tutorial-assignments.csv"
 OutDir = "./tutorial-assignments"
 
@@ -42,6 +44,8 @@ with open(CsvIn, "r") as CsvFile:
     for row in r:
         if(row[0].isdigit()):
             StudentNumber = row[0]
+            if len(StudentNumber) > 8:
+                StudentNumber = StudentNumber.lstrip("0")
             StudentGroup = row[-1]
             StudentCount += 1
             if(StudentGroup not in StudentAssignments):
@@ -61,7 +65,7 @@ print("")
 file_tpl = Template("""<html>
 <head>
   <title>Student Tutorial Assignments</title>
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="./resources/style.css" />
 </head>
 <body>
   <div id="groupspace">
@@ -109,8 +113,12 @@ for TutorialGroup, GroupMembers in StudentAssignments.items():
     if(leftovers != ""):
         leftovers = "Not found:" + leftovers
     output = file_tpl.substitute(group=TutorialGroup, studentdivs=output_divs, leftovers=leftovers)
+    output = output.replace(ImgDir, "./resources")
     outfile = os.path.join(OutDir, TutorialGroup+".html")
     with open(outfile, "w") as outfh:
         outfh.write(output)
 
-    #print(output)
+for root, dirs, files in os.walk(ImgDir):
+    for file in files:
+        if file[-4:] == ".jpg":
+            shutil.copy2(os.path.join(ImgDir, file), os.path.join(OutDir, "resources/"))

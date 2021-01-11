@@ -21,15 +21,19 @@ pip install bs4
 1. Copy all the files into some directory of your choice.
 2. Use Excel to open the file tutorial-assignments.csv and here enter your
    class information. The format is as follows:
-   | Student Number | Student Name | Student Identifier | Tutorial Group |
-   | -------------- | ------------ | ------------------ | -------------- |
+   | Student Number | ... | ... | Tutorial Group |
+   | -------------- | --- | --- | -------------- |
 
-   This is fairly easy to create by copy and pasting various columns from the
-   CSV file you get if you click on `Download` at the same stage where you
+   Where "..." means that you can have any number of columns intervening. As
+   long as the first column is the Student Number and the last column is the
+   Tutorial Group you want to assign the student to the rest is ignored.   
+
+   Such a file is fairly easy to create by copy and pasting various columns from
+   the CSV file you get if you click on `Download` at the same stage where you
    are instructed to go to the class list with photos in the next step, but
    experience shows that many programme administrators will be happy to provide
-   you with such a list including tutorial assignments if you ask nicely.
-    
+   you with such a list including tutorial assignments if you ask nicely.      
+
    There is some sample data contained in the file when you download first,
    which should of course be removed/overwritten before continuing.
 3. On [UCL Portico](https://ucl.ac.uk/portico) go to `Module registration lists`,
@@ -51,10 +55,7 @@ pip install bs4
    ```
    python make-class-list.py
    ```
-6. Copy or move the directory "SMO Class List - with Photos_files" (which your
-   web browser should have saved automatically alongside the webpage from portico)
-   into the directory "tutorial-assignments".
-7. Inside the directory "tutorial-assignments" you will now find an HTML documentat
+6. Inside the directory "tutorial-assignments" you will now find an HTML documentat
    for each of the groups. You can open these with your web browser and either
    print them directly or save them as PDF files from there.
 
