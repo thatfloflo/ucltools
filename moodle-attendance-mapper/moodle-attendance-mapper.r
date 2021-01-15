@@ -5,7 +5,7 @@
 # Automates extraction of BB Collaborate and Zoom attendance data from UCL moodle logs.
 #
 # Author:  Florian Breit <florian.breit.12@ucl.ac.uk>
-# Version: 1.1.0
+# Version: 1.1.1
 
 #
 # USER VARIABLES
@@ -13,8 +13,8 @@
 
 # CHANGE THESE TO THE CORRECT VALUES FOR YOUR MODULE
 MODULE_CODE <- "PLIN1234"
-FIRST_WEEK_NUMBER <- 6
-FIRST_WEEK_DATE <- "2020-10-05"
+FIRST_WEEK_NUMBER <- 20
+FIRST_WEEK_DATE <- "2021-01-11"
 EXTRACT_BB_COLLAB = TRUE
 EXTRACT_ZOOM_CLICKS = TRUE
 
@@ -185,22 +185,30 @@ for(log_file in log_files) {
         }
       }
 
-      # Check if target_name exists in attendance sheet
-      if(sum(attendance$Name_normalised==target_name)) {
-        # Overwrite that cell in attendance sheet with "Present"
-        attendance[attendance$Name_normalised==target_name, target_col_index] <- "Present"
-      } else {
-        if(!(target_name %in% MISSING_ATTENDEES)) {
-          MISSING_ATTENDEES <- append(MISSING_ATTENDEES, target_name)
+            # Check if target_name exists in attendance sheet
+            if(sum(attendance$Name_normalised==target_name)) {
+              # Overwrite that cell in attendance sheet with "Present"
+              attendance[attendance$Name_normalised==target_name, target_col_index] <- "Present"
+            } else {
+              # Couldn't match normalised name, try matching with raw attendance sheet name
+              # (Sometimes compund surnames and middle names are not distinct on moodle,
+              #  so this is a good fallback where a surname was mistakes as middle)
+              if(sum(attendance$Name==target_name)) {
+                attendance[attendance$Name==target_name, target_col_index] <- "Present"
+              }
+              else {
+                if(!(target_name %in% MISSING_ATTENDEES)) {
+                  MISSING_ATTENDEES <- append(MISSING_ATTENDEES, target_name)
+                }
+              }
+            }
+          }
+          message("  Found ", i, " attendees in current log file.")
+        } else {
+          message("  No attendees found in current log file.")
         }
       }
-    }
-    message("  Found ", i, " attendees in current log file.")
-  } else {
-    message("  No attendees found in current log file.")
-  }
-}
-message("Completed processing all log files.")
+      message("Completed processing all log files.")
 
 # Report on missing attendees and missing weeks
 if(length(MISSING_ATTENDEES)) {
