@@ -5,7 +5,7 @@
 # Automates extraction of BB Collaborate and Zoom attendance data from UCL moodle logs.
 #
 # Author:  Florian Breit <florian.breit.12@ucl.ac.uk>
-# Version: 1.1.1
+# Version: 1.1.2
 
 #
 # USER VARIABLES
@@ -53,9 +53,9 @@ ATTENDANCE_SHEET_PATH <- paste(MODULE_CODE, "attendance.xlsx")
 date_to_ucl_week <- function(x_date) {
   date_diff <- x_date - FIRST_WEEK_DATE # Returns difference in days
   add_weeks <- floor(as.numeric(date_diff) / 7)
-
+  
   x_week <- FIRST_WEEK_NUMBER + add_weeks
-
+  
   return(x_week)
 }
 
@@ -122,6 +122,7 @@ if(!length(log_files)) {
 for(log_file in log_files) {
   message("Processing log file: `", log_file, "`.", sep="")
   # Read in log
+  message("  Loading log file into memory.")
   log <- read_delim(log_file, delim=",", col_types = cols(
     Time = col_character(),
     `User full name` = col_character(),
@@ -133,18 +134,19 @@ for(log_file in log_files) {
     Origin = col_character(),
     `IP address` = col_character()
   ))
-
+  
   # Tidy up the log
+  message("  Tidying up the logs.")
   log <- log %>%
     select(Time, `User full name`, `Event name`, Component)%>%
     rowwise() %>%
     mutate(Time = log_time_to_date(Time)) %>%
     mutate(`User full name` = reformat_log_user_name(`User full name`)) %>%
     mutate(Week = date_to_ucl_week(Time))
-
+  
   # Set up an empty combined log, we will then merge collab and zoom data into it
   combined_log <- log[NULL,]
-
+  
   # Tidy and filter for launching of collaborate sessions
   if(EXTRACT_BB_COLLAB) {
     message("  Extracting BB Collaborate launch data.")
@@ -152,7 +154,7 @@ for(log_file in log_files) {
       filter(`Event name` == "Collab session launched")
     combined_log <- bind_rows(combined_log, collab_log)
   }
-
+  
   # Tidy and filter for launching of zoom links
   if(EXTRACT_ZOOM_CLICKS) {
     message("  Extracting clicks on Zoom links.")
@@ -160,31 +162,33 @@ for(log_file in log_files) {
       filter(`Event name` == "Clicked join meeting button" & `Component` == "Zoom meeting")
     combined_log <- bind_rows(combined_log, zoom_log)
   }
-
+  
   # Collapse log to just show name and week attended for each event
   attendance_by_week <- combined_log %>%
     group_by(`User full name`, Week) %>%
     summarise_all(list())
-
+  
   # Iterate through weekly attendance and check this off in attendance sheet
+  message("  Extracting weekly attendance records.")
   if(nrow(attendance_by_week)) {
+    pb = txtProgressBar(min = 0, max = nrow(attendance_by_week), initial = 0, style = 3)
     for(i in 1:nrow(attendance_by_week)) {
       # Extract attendee name and week of attendance
       attendee_name <- attendance_by_week[i,]$`User full name`
       attendee_week <- attendance_by_week[i,]$Week
-
+      
       # Figure out the filter values to get the right cell in attendance sheet
       target_name <- attendee_name
       target_col_name <- paste("Week", attendee_week, sep=" ")
       target_col_index <- grep(target_col_name, colnames(attendance))
-
+      
       # Check if there is a column for that week
       if(!length(target_col_index)) {
         if(!(attendee_week %in% MISSING_WEEKS)) {
           MISSING_WEEKS <- append(MISSING_WEEKS, attendee_week)
         }
       }
-
+      
       # Check if target_name exists in attendance sheet
       if(sum(attendance$Name_normalised==target_name)) {
         # Overwrite that cell in attendance sheet with "Present"
@@ -192,7 +196,7 @@ for(log_file in log_files) {
       } else {
         # Couldn't match normalised name, try matching with raw attendance sheet name
         # (Sometimes compund surnames and middle names are not distinct on moodle,
-        #  so this is a good fallback where a surname was mistakes as middle)
+        #  so this is a good fallback where a surname was assumed to be a middle)
         if(sum(attendance$Name==target_name)) {
           attendance[attendance$Name==target_name, target_col_index] <- "Present"
         }
@@ -202,8 +206,9 @@ for(log_file in log_files) {
           }
         }
       }
+      setTxtProgressBar(pb, i)
     }
-    message("  Found ", i, " attendees in current log file.")
+    message("\n  Found ", i, " attendance records in current log file.")
   } else {
     message("  No attendees found in current log file.")
   }
